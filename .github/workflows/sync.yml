@@ -1,0 +1,28 @@
+name: Slack bot schedulers
+
+on:
+  schedule:
+    - cron: "*/5 * * * *"   # status sync
+    - cron: "0 7 * * 1-5"   # weekday morning agenda (07:00 UTC = 8am UK summer time)
+  workflow_dispatch: {}
+
+jobs:
+  sync:
+    if: github.event.schedule != '0 7 * * 1-5'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call sync endpoint
+        run: |
+          curl --fail --silent --show-error \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+            "${{ secrets.SYNC_URL }}/api/sync"
+
+  agenda:
+    if: github.event.schedule == '0 7 * * 1-5'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call agenda endpoint
+        run: |
+          curl --fail --silent --show-error \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+            "${{ secrets.SYNC_URL }}/api/agenda"

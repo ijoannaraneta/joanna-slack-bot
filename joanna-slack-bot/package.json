@@ -6,9 +6,12 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "get-google-token": "node --env-file=.env.local scripts/get-google-token.mjs"
   },
   "dependencies": {
+    "@slack/web-api": "^7.14.1",
+    "googleapis": "^171.4.0",
     "next": "16.1.3",
     "react": "19.2.3",
     "react-dom": "19.2.3"
