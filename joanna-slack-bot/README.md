@@ -58,13 +58,12 @@ With an event happening right now, your Slack status should update.
 1. Deploy to [Vercel](https://vercel.com/new), setting the project root to this
    directory. Add all the `.env.local` values (including a random `CRON_SECRET`)
    as environment variables.
-2. Scheduling:
-   - **Vercel Pro**: `vercel.json` already defines a cron every 5 minutes; done.
-   - **Vercel Hobby** (crons only run once/day): use the GitHub Actions workflow
-     in `.github/workflows/sync.yml` instead. Add two repository secrets on
-     GitHub: `SYNC_URL` (your deployment base URL, e.g.
-     `https://your-app.vercel.app` — no trailing slash) and
-     `CRON_SECRET` (same value as on Vercel).
+2. Scheduling is handled by the GitHub Actions workflow in
+   `.github/workflows/sync.yml` (Vercel Hobby crons are limited to once/day,
+   so Vercel crons aren't used). Add two repository secrets on GitHub
+   (Settings → Secrets and variables → Actions): `SYNC_URL` (your deployment
+   base URL, e.g. `https://your-app.vercel.app` — no trailing slash) and
+   `CRON_SECRET` (same value as on Vercel).
 
 ## Customizing statuses
 
