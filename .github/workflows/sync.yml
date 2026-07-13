@@ -12,17 +12,31 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Call sync endpoint
+        env:
+          SYNC_URL: ${{ secrets.SYNC_URL }}
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
         run: |
+          if [ -z "$SYNC_URL" ]; then
+            echo "SYNC_URL secret not set yet — skipping."
+            exit 0
+          fi
           curl --fail --silent --show-error \
-            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
-            "${{ secrets.SYNC_URL }}/api/sync"
+            -H "Authorization: Bearer $CRON_SECRET" \
+            "$SYNC_URL/api/sync"
 
   agenda:
     if: github.event.schedule == '0 7 * * 1-5'
     runs-on: ubuntu-latest
     steps:
       - name: Call agenda endpoint
+        env:
+          SYNC_URL: ${{ secrets.SYNC_URL }}
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
         run: |
+          if [ -z "$SYNC_URL" ]; then
+            echo "SYNC_URL secret not set yet — skipping."
+            exit 0
+          fi
           curl --fail --silent --show-error \
-            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
-            "${{ secrets.SYNC_URL }}/api/agenda"
+            -H "Authorization: Bearer $CRON_SECRET" \
+            "$SYNC_URL/api/agenda"
